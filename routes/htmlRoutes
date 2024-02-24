@@ -1,1 +1,15 @@
-const express = require("express"); 
+const express = require("express")
+const fs = require("fs")
+const path = require("path")
+
+
+app.get("/api/notes", (res, res) => {
+    })
+
+
+app.post("/api/notes", (res, res) => {
+    })
+
+
+app.delete("/api/notes/:id", (res, res) => {
+    })
