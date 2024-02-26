@@ -10,43 +10,34 @@ if(!fs.existsSync("db.json")){
     })
 }
 
-
-
-
-
 router.get("/api/notes", (req, res) => {
-    fs.readFile(path.join(__dirname, "db.json"), "utf8", (err, data) => {
-        if (err) {
-            return res.status(500).json({error: "Computer Error"})
-        }
-    })
+    let notes = fs.readFileSync("db.json")
+    res.send(notes)
 });
 
-router.push("/api/notes", (req, res) => {
-    const {title, text} = req.body
-    if(!title || !test) {
-        return res.status(404).json({error: "Must have text and title"})
-    } 
-    fs.readFile(path.join(__dirname, "db,json"), "utf8", (err, data) => {
-        if (err){
-            return res.status(404).json({error: "Computer error"})
-        }
-    const notes = JSON.parse(data); 
-    const newNote = {
-            id: 
-            title, 
-            text, 
-        }
-    notes.push(newNote); 
-    fs.writeFile(path.join(__dirname, "db.json"), JSON.stringify(notes), (err) => {
+router.post("/api/notes", express.json(), (req, res) => {
+    const notes = JSON.parse(fs.readFileSync("db.json"));
+    let postNote = req.body 
+
+    notes.push(postNote)
+    fs.writeFile("db.json", JSON.stringify(notes), (err) => {
         if(err) {
-            return res.status(404).json({error: "Computer error"})
+            return console.log(err)
         }
-        res.status().json(newNote);
-    })
+        res.send(postNote)
     })
 }); 
 
-router.delete("/api/notes/:id", (req, res) => {}); 
+router.delete("/api/notes/:id", (req, res) => {
+    const notes = JSON.parse(fs.readFileSync("db.json"));
+    let filterNotes = notes.filter(note => note.id !== req.params.id)
 
+    fs.writeFile("db.json", JSON.stringify(filterNotes), (err) => {
+        if(err) {
+            return console.log(err)
+        }
+        res.send(notes)
+    })
+}); 
 
+module.exports = router
