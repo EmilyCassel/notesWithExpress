@@ -1,13 +1,20 @@
+const router = require("express").Router()
 const express = require("express")
 const fs = require("fs")
-const path = require("path")
 
-const app = express(); 
-const Port = process.env.PORT || 3000; 
+if(!fs.existsSync("db.json")){
+    fs.writeFile("db.json", JSON.stringify([]), function(error){
+        if(error){
+            return console.log(error)
+        }
+    })
+}
 
-app.use(express.json());
 
-app.get("/api/notes", (req, res) => {
+
+
+
+router.get("/api/notes", (req, res) => {
     fs.readFile(path.join(__dirname, "db.json"), "utf8", (err, data) => {
         if (err) {
             return res.status(500).json({error: "Computer Error"})
@@ -15,7 +22,7 @@ app.get("/api/notes", (req, res) => {
     })
 });
 
-app.port("/api/notes", (req, res) => {
+router.push("/api/notes", (req, res) => {
     const {title, text} = req.body
     if(!title || !test) {
         return res.status(404).json({error: "Must have text and title"})
@@ -40,10 +47,6 @@ app.port("/api/notes", (req, res) => {
     })
 }); 
 
-app.delete("/api/notes/:id", (req, res) => {}); 
+router.delete("/api/notes/:id", (req, res) => {}); 
 
-app.use(express.static("public"));
 
-app.get("*", (req, res) => {});
-
-app.listen(PORT, () => {});
