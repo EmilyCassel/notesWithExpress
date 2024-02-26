@@ -9,11 +9,11 @@ app.use(express.json());
 
 app.use(express.static("public"));
 
-app.use("/", viewRoutes)
-app.use("/", apiRoutes)
+app.use("/", [viewRoutes, apiRoutes])
 
 app.listen(PORT, () => {
     console.log("listening on PORT", PORT)
 });
 
-
+   
+ 

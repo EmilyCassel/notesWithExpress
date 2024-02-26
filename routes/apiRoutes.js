@@ -1,6 +1,9 @@
 const router = require("express").Router()
 const express = require("express")
 const fs = require("fs")
+const { v4 } = require('uuid');
+ 
+
 
 if(!fs.existsSync("db.json")){
     fs.writeFile("db.json", JSON.stringify([]), function(error){
@@ -18,6 +21,7 @@ router.get("/api/notes", (req, res) => {
 router.post("/api/notes", express.json(), (req, res) => {
     const notes = JSON.parse(fs.readFileSync("db.json"));
     let postNote = req.body 
+    postNote.id = v4()
 
     notes.push(postNote)
     fs.writeFile("db.json", JSON.stringify(notes), (err) => {
